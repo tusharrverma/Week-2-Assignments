@@ -39,11 +39,67 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
+
 const express = require('express');
 const bodyParser = require('body-parser');
+const uuidv4 = require("uuid");
 
 const app = express();
 
 app.use(bodyParser.json());
 
+const port = 3000
+
+function createToDo() {
+  let arr = [
+    {
+      Title: "Computer",
+      ID: uuidv4.v4(),
+      Description: "A machine that is capable of performing multiple tasks."
+    },
+    {
+      Title: "Bus",
+      ID: uuidv4.v4(),
+      Description: "A medium for public transport."
+    },
+  ];
+  return arr;
+};
+  
+let arr = createToDo();
+
+app.get('/todos', (req, res) => {
+  res.status(200).json(arr);
+})
+
+app.get('/todos:id', (req, res) => {
+  let count = 0;
+  // arr.forEach(myFunction);
+  // function myFunction(item) {
+  //   if (req.params.id === item.ID) {
+  //     count++;
+  //     res.status(200).json(item);
+  //   }
+  // }
+  // if (count === 0) {
+  //   res.sendStatus(404);
+  // }
+  for (i = 0; i < arr.length; i++) {
+    if (req.params.id === arr[i].ID) {
+      count++;
+      res.status(200).json(arr[i]);
+      break;
+    }
+  }
+  if (count === 0) {
+    res.sendStatus(404);
+  }
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
 module.exports = app;
+
+
