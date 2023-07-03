@@ -72,18 +72,8 @@ app.get('/todos', (req, res) => {
   res.status(200).json(arr);
 })
 
-app.get('/todos:id', (req, res) => {
+app.get('/todos/:id', (req, res) => {
   let count = 0;
-  // arr.forEach(myFunction);
-  // function myFunction(item) {
-  //   if (req.params.id === item.ID) {
-  //     count++;
-  //     res.status(200).json(item);
-  //   }
-  // }
-  // if (count === 0) {
-  //   res.sendStatus(404);
-  // }
   for (i = 0; i < arr.length; i++) {
     if (req.params.id === arr[i].ID) {
       count++;
@@ -101,5 +91,3 @@ app.listen(port, () => {
 })
 
 module.exports = app;
-
-
