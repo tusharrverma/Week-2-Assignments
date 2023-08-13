@@ -46,7 +46,7 @@ const uuidv4 = require("uuid");
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json());        //not required for GET requests
 
 const port = 3000
 
@@ -85,6 +85,50 @@ app.get('/todos/:id', (req, res) => {
     res.sendStatus(404);
   }
 })
+
+app.post('/todos', (req, res) => {
+let temp = req.body;
+  if ((temp.Title.length > 0) && (temp.Description.length > 0)) {
+    temp.ID = uuidv4.v4();
+    arr.push(temp);
+    console.log(arr[arr.length-1]);
+    res.status(201).json(arr[arr.length-1].ID);
+  }
+})
+
+app.put('/todos/:id', (req, res) => {
+let count = 0;
+for (i = 0; i < arr.length; i++) {
+  if (req.params.id === arr[i].ID) {
+    count++;
+    let temp = req.body;
+    temp.ID = req.params.id
+    arr.splice(i,1);
+    arr.push(temp);
+    res.sendStatus(200);
+    break;
+  }
+}
+if (count === 0) {
+  res.sendStatus(404);
+}
+})
+
+app.delete('/todos/:id', (req, res) => {
+  let count = 0;
+  for (i = 0; i < arr.length; i++) {
+    if (req.params.id === arr[i].ID) {
+      count++;
+      arr.splice(i,1);
+      res.sendStatus(200);
+      console.log(arr);
+      break;
+    }
+  }
+  if (count === 0) {
+    res.sendStatus(404);
+  }
+  })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
